@@ -1,23 +1,25 @@
-```html
 <!DOCTYPE html>
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hesaplama Merkezi</title>
+
+<title>EnginSite | Hesaplama Merkezi</title>
+
+<meta name="description" content="Maaş, fazla mesai, kıdem tazminatı ve araç yakıt maliyeti hesaplama aracı.">
 
 <style>
 body{
-    font-family: Arial;
     margin:0;
-    background:#f4f4f4;
+    font-family:Arial;
+    background:#f3f4f6;
 }
 
 header{
     background:#111827;
     color:white;
     text-align:center;
-    padding:20px;
+    padding:25px;
 }
 
 .container{
@@ -26,19 +28,18 @@ header{
     padding:20px;
 }
 
-.box{
+.card{
     background:white;
     padding:20px;
     margin-bottom:20px;
     border-radius:10px;
-    box-shadow:0 2px 8px rgba(0,0,0,0.1);
+    box-shadow:0 2px 10px rgba(0,0,0,0.1);
 }
 
 input{
     width:100%;
     padding:10px;
-    margin:8px 0 15px;
-    box-sizing:border-box;
+    margin:10px 0;
 }
 
 button{
@@ -57,7 +58,7 @@ button:hover{
 .result{
     margin-top:10px;
     padding:10px;
-    background:#eef6ff;
+    background:#eef2ff;
     border-radius:6px;
 }
 
@@ -73,53 +74,44 @@ footer{
 <body>
 
 <header>
-<h1>Hesaplama Merkezi</h1>
-<p>Fazla Mesai - Yakıt - Kıdem Tazminatı</p>
+<h1>EnginSite</h1>
+<p>Hesaplama Merkezi</p>
 </header>
 
 <div class="container">
 
-<!-- FAZLA MESAİ -->
-<div class="box">
+<!-- MAAŞ -->
+<div class="card">
 <h2>Fazla Mesai Hesaplama</h2>
 
-<label>Aylık Maaş (TL)</label>
-<input type="number" id="maas">
+<input id="maas" type="number" placeholder="Aylık maaş (TL)">
+<input id="mesai" type="number" placeholder="Fazla mesai saati">
 
-<label>Fazla Mesai Saati</label>
-<input type="number" id="mesai">
-
-<button onclick="hesaplaMesai()">Hesapla</button>
+<button onclick="mesai()">Hesapla</button>
 
 <div class="result" id="mesaiSonuc"></div>
 </div>
 
 <!-- YAKIT -->
-<div class="box">
+<div class="card">
 <h2>Yakıt Maliyeti</h2>
 
-<label>Yakıta Harcanan Tutar (TL)</label>
-<input type="number" id="yakit">
+<input id="yakit" type="number" placeholder="Harcanan yakıt (TL)">
+<input id="km" type="number" placeholder="Gidilen km">
 
-<label>Gidilen KM</label>
-<input type="number" id="km">
-
-<button onclick="hesaplaYakit()">Hesapla</button>
+<button onclick="yakit()">Hesapla</button>
 
 <div class="result" id="yakitSonuc"></div>
 </div>
 
 <!-- KIDEM -->
-<div class="box">
+<div class="card">
 <h2>Kıdem Tazminatı</h2>
 
-<label>Aylık Maaş (TL)</label>
-<input type="number" id="kidemMaas">
+<input id="kidemMaas" type="number" placeholder="Aylık maaş">
+<input id="yil" type="number" placeholder="Çalışma yılı">
 
-<label>Çalışma Süresi (Yıl)</label>
-<input type="number" id="kidemYil">
-
-<button onclick="hesaplaKidem()">Hesapla</button>
+<button onclick="kidem()">Hesapla</button>
 
 <div class="result" id="kidemSonuc"></div>
 </div>
@@ -127,58 +119,46 @@ footer{
 </div>
 
 <footer>
-© 2026 Hesaplama Merkezi
+© EnginSite 2026
 </footer>
 
 <script>
 
-// FAZLA MESAİ
-function hesaplaMesai(){
+function mesai(){
+let maas=document.getElementById("maas").value;
+let s=document.getElementById("mesai").value;
 
-let maas = Number(document.getElementById("maas").value);
-let mesai = Number(document.getElementById("mesai").value);
+let gun=maas/30;
+let saat=gun/7.5;
+let toplam=saat*1.5*s;
 
-let gunluk = maas / 30;
-let saatlik = gunluk / 7.5;
-let fazla = saatlik * 1.5 * mesai;
-
-document.getElementById("mesaiSonuc").innerHTML =
-"Günlük: " + gunluk.toFixed(2) + " TL<br>" +
-"Saatlik: " + saatlik.toFixed(2) + " TL<br>" +
-"Fazla Mesai: " + fazla.toFixed(2) + " TL";
+document.getElementById("mesaiSonuc").innerHTML=
+"Günlük: "+gun.toFixed(2)+" TL<br>"+
+"Saatlik: "+saat.toFixed(2)+" TL<br>"+
+"Mesai: "+toplam.toFixed(2)+" TL";
 }
 
-// YAKIT
-function hesaplaYakit(){
+function yakit(){
+let t=document.getElementById("yakit").value;
+let k=document.getElementById("km").value;
 
-let yakit = Number(document.getElementById("yakit").value);
-let km = Number(document.getElementById("km").value);
+let kmBasi=t/k;
 
-if(km <= 0){
-document.getElementById("yakitSonuc").innerHTML = "Geçerli KM girin";
-return;
+document.getElementById("yakitSonuc").innerHTML=
+"KM başına: "+kmBasi.toFixed(2)+" TL";
 }
 
-let kmBasi = yakit / km;
+function kidem(){
+let m=document.getElementById("kidemMaas").value;
+let y=document.getElementById("yil").value;
 
-document.getElementById("yakitSonuc").innerHTML =
-"KM Başına Maliyet: " + kmBasi.toFixed(2) + " TL";
-}
+let sonuc=(m/30)*30*y;
 
-// KIDEM
-function hesaplaKidem(){
-
-let maas = Number(document.getElementById("kidemMaas").value);
-let yil = Number(document.getElementById("kidemYil").value);
-
-let kidem = (maas / 30) * 30 * yil;
-
-document.getElementById("kidemSonuc").innerHTML =
-"Kıdem Tazminatı: " + kidem.toFixed(2) + " TL";
+document.getElementById("kidemSonuc").innerHTML=
+"Kıdem: "+sonuc.toFixed(2)+" TL";
 }
 
 </script>
 
 </body>
 </html>
-```
