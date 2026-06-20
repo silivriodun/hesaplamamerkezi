@@ -172,6 +172,47 @@ document.getElementById("kidemSonuc").innerHTML=
 }
 
 </script>
+    <h2>Boy – Kilo Endeksi (BMI) Hesaplama</h2>
+
+<label>Boy (cm):</label><br>
+<input type="number" id="boy" placeholder="Örn: 175"><br><br>
+
+<label>Kilo (kg):</label><br>
+<input type="number" id="kilo" placeholder="Örn: 70"><br><br>
+
+<button onclick="hesaplaBMI()">Hesapla</button>
+
+<h3 id="sonuc"></h3>
+
+<script>
+function hesaplaBMI() {
+    let boy = document.getElementById("boy").value;
+    let kilo = document.getElementById("kilo").value;
+
+    if (!boy || !kilo) {
+        document.getElementById("sonuc").innerText = "Lütfen boy ve kilo giriniz!";
+        return;
+    }
+
+    let mBoy = boy / 100;
+    let bmi = kilo / (mBoy * mBoy);
+
+    let durum = "";
+
+    if (bmi < 18.5) {
+        durum = "Zayıf";
+    } else if (bmi < 25) {
+        durum = "Normal";
+    } else if (bmi < 30) {
+        durum = "Fazla kilolu";
+    } else {
+        durum = "Obez";
+    }
+
+    document.getElementById("sonuc").innerText =
+        "BMI: " + bmi.toFixed(2) + " - " + durum;
+}
+</script>
 <body>
 
 <h1>Hesaplama Merkezi</h1>
