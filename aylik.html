@@ -7,26 +7,32 @@
 
 <style>
 body{
-    font-family: 'Arial', sans-serif;
+    font-family: Arial, sans-serif;
     background: linear-gradient(135deg, #ece9e6, #ffffff);
     margin:0;
     padding:20px;
 }
 
-/* KART */
+/* ANA KUTU */
 .kutu{
     max-width:650px;
     margin:auto;
-    background:#ffffff;
+    background:white;
     padding:30px;
     border-radius:18px;
-    box-shadow:0 10px 30px rgba(0,0,0,0.1);
-    border:1px solid #eee;
-    transition:0.3s;
+    box-shadow:0 10px 30px rgba(0,0,0,0.12);
 }
 
-.kutu:hover{
-    transform:translateY(-3px);
+/* DUYURU */
+.duyuru{
+    background: linear-gradient(135deg, #fff3cd, #ffe8a1);
+    border-left: 6px solid #ff9800;
+    padding:15px 18px;
+    border-radius:12px;
+    margin-bottom:20px;
+    color:#5a4b00;
+    font-size:14px;
+    line-height:1.6;
 }
 
 /* BAŞLIK */
@@ -36,11 +42,13 @@ h1{
     margin-bottom:5px;
 }
 
+/* AÇIKLAMA */
 .aciklama{
     text-align:center;
     color:#7f8c8d;
-    margin-bottom:25px;
     font-size:14px;
+    margin-bottom:20px;
+    line-height:1.5;
 }
 
 /* LABEL */
@@ -55,73 +63,79 @@ label{
 input{
     width:100%;
     padding:14px;
-    border:1px solid #dcdcdc;
-    border-radius:10px;
     margin-top:6px;
+    border:1px solid #ddd;
+    border-radius:10px;
     font-size:14px;
-    transition:0.2s;
 }
 
 input:focus{
-    border-color:#6d4c41;
     outline:none;
-    box-shadow:0 0 5px rgba(109,76,65,0.3);
+    border-color:#6d4c41;
+    box-shadow:0 0 6px rgba(109,76,65,0.2);
 }
 
 /* BUTON */
 button{
     width:100%;
-    padding:15px;
     margin-top:20px;
+    padding:15px;
     background:linear-gradient(135deg,#6d4c41,#8d6e63);
     color:white;
     border:none;
     border-radius:10px;
-    cursor:pointer;
     font-size:16px;
+    cursor:pointer;
     font-weight:bold;
-    transition:0.3s;
 }
 
 button:hover{
     transform:scale(1.02);
-    opacity:0.95;
 }
 
 /* SONUÇ */
 #sonuc{
     margin-top:25px;
     padding:18px;
-    background:linear-gradient(135deg,#f1f8e9,#e8f5e9);
-    border-radius:12px;
-    line-height:1.8;
+    background:#f1f8e9;
     border-left:5px solid #6d4c41;
+    border-radius:10px;
+    line-height:1.7;
 }
 
-/* BAŞLIK SONUÇ */
 #sonuc h2{
     color:#2e7d32;
-    margin-top:10px;
 }
 </style>
 </head>
+
 <body>
 
 <div class="kutu">
 
+<!-- 📢 DUYURU -->
+<div class="duyuru">
+<b>📢 Duyuru</b><br><br>
+
+Hesaplama sistemi <b>7,5 saat günlük çalışma</b> üzerinden yapılır.<br><br>
+
+İzinler ilk olarak <b>fazla mesainiz varsa oradan düşülür</b>.<br>
+Eğer fazla mesai, izin süresini karşılamazsa kalan tutar <b>maaştan düşülür</b>.
+</div>
+
 <h1>💰 Aylık Maaş Hesaplama</h1>
 
 <div class="aciklama">
-Net maaş, izin ve fazla mesai hesaplama sistemi
+Net maaş, izin günleri ve fazla mesai saatlerine göre otomatik hesaplama
 </div>
 
-<label>Net Maaşınız (TL)</label>
+<label>Net Maaş (TL)</label>
 <input type="number" id="maas" placeholder="30000">
 
-<label>Kullanılan İzin Günü</label>
+<label>Kullanılan İzin (Gün)</label>
 <input type="number" id="izin" placeholder="0">
 
-<label>Fazla Mesai Saati</label>
+<label>Fazla Mesai (Saat)</label>
 <input type="number" id="mesai" placeholder="0">
 
 <button onclick="hesapla()">HESAPLA</button>
@@ -152,7 +166,6 @@ if(mesai >= izinSaati){
 }
 
 let fazlaMesaiTutari = saatlikUcret * 1.5 * netMesai;
-
 let izinKesintisi = kalanIzinSaati * saatlikUcret;
 
 let toplamMaas = maas + fazlaMesaiTutari - izinKesintisi;
@@ -163,9 +176,10 @@ document.getElementById("sonuc").innerHTML = `
 <b>Saatlik Ücret:</b> ${saatlikUcret.toFixed(2)} TL<br><br>
 
 <b>Kullanılan İzin:</b> ${izin} Gün (${izinSaati.toFixed(1)} Saat)<br>
-<b>Girilen Fazla Mesai:</b> ${mesai} Saat<br>
-<b>İzinden Sonra Kalan Fazla Mesai:</b> ${netMesai.toFixed(1)} Saat<br>
-<b>Maaştan Düşülen Süre:</b> ${kalanIzinSaati.toFixed(1)} Saat<br>
+<b>Fazla Mesai:</b> ${mesai} Saat<br>
+<b>İzinden Sonra Kalan Mesai:</b> ${netMesai.toFixed(1)} Saat<br>
+<b>İzin Açığı:</b> ${kalanIzinSaati.toFixed(1)} Saat<br><br>
+
 <b>Fazla Mesai Kazancı:</b> ${fazlaMesaiTutari.toFixed(2)} TL<br>
 <b>İzin Kesintisi:</b> ${izinKesintisi.toFixed(2)} TL<br>
 
