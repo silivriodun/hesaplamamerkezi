@@ -158,6 +158,179 @@ Net maaş, izin günleri ve fazla mesai saatlerine göre otomatik hesaplama
 <div id="sonuc"></div>
 
 </div>
+    <div class="card maas-card">
+
+<h2>💰 Maaş ve Fazla Mesai Hesaplama</h2>
+
+<p class="info">
+Tüm saatler iş yerinde geçirilen toplam süredir (yemek molası dahil). Sistem otomatik olarak mola düşer ve mesaiyi hesaplar.
+</p>
+
+<div class="form-group">
+<label>💵 Aylık Net Maaş (₺)</label>
+<input type="number" id="maas">
+</div>
+
+<div class="form-group">
+<label>📅 Toplam Çalışılan Gün</label>
+<input type="number" id="gun">
+</div>
+
+<div class="form-group">
+<label>🏢 Hafta İçi Günlük Çalışma Süresi (Mola Dahil - Saat)</label>
+<input type="number" step="0.1" id="saat">
+</div>
+
+<div class="form-group">
+<label>☀️ Pazar Çalışma Sayısı</label>
+<input type="number" id="pazar" value="0">
+</div>
+
+<div class="form-group">
+<label>⏰ Pazar Günlük Çalışma Süresi (Mola Dahil)</label>
+<input type="number" step="0.1" id="pazarSaat" value="0">
+</div>
+
+<div class="form-group">
+<label>🏢 Cumartesi Çalışma Sayısı</label>
+<input type="number" id="cumartesi" value="0">
+</div>
+
+<div class="form-group">
+<label>⏰ Cumartesi Günlük Çalışma Süresi (Mola Dahil)</label>
+<input type="number" step="0.1" id="cumartesiSaat" value="0">
+</div>
+
+<button onclick="hesaplaMaas()">🧮 Hesapla</button>
+
+<div id="sonuc" class="result-card"></div>
+
+</div>
+
+<style>
+.maas-card{
+max-width:700px;
+margin:20px auto;
+padding:25px;
+background:#fff;
+border-radius:18px;
+box-shadow:0 10px 30px rgba(0,0,0,.12);
+font-family:Arial;
+}
+
+.info{
+text-align:center;
+color:#666;
+margin-bottom:15px;
+}
+
+.form-group{
+margin-bottom:12px;
+}
+
+label{
+display:block;
+font-weight:600;
+margin-bottom:5px;
+}
+
+input{
+width:100%;
+padding:12px;
+border-radius:10px;
+border:1px solid #ddd;
+}
+
+button{
+width:100%;
+padding:14px;
+margin-top:10px;
+border:none;
+border-radius:12px;
+background:#2563eb;
+color:#fff;
+font-weight:bold;
+cursor:pointer;
+}
+
+.result-card{
+margin-top:20px;
+background:#f8fafc;
+border-left:5px solid #2563eb;
+padding:15px;
+border-radius:12px;
+}
+
+.result-item{
+display:flex;
+justify-content:space-between;
+padding:8px 0;
+border-bottom:1px solid #e5e7eb;
+}
+
+.result-item:last-child{
+border-bottom:none;
+}
+</style>
+
+<script>
+function mola(saat){
+if(saat > 11) return 1;
+if(saat > 7.5) return 1;
+if(saat > 4) return 0.5;
+return 0;
+}
+
+function hesaplaMaas(){
+
+let maas = +document.getElementById("maas").value;
+let gun = +document.getElementById("gun").value;
+let saat = +document.getElementById("saat").value;
+
+let pazar = +document.getElementById("pazar").value || 0;
+let pazarSaat = +document.getElementById("pazarSaat").value || 0;
+
+let cumartesi = +document.getElementById("cumartesi").value || 0;
+let cumartesiSaat = +document.getElementById("cumartesiSaat").value || 0;
+
+// HAFTA İÇİ
+let haftaIciNet = saat - mola(saat);
+let haftaIciMesai = Math.max(0, haftaIciNet - 7.5) * (gun - pazar - cumartesi);
+
+// PAZAR
+let pazarNet = pazarSaat - mola(pazarSaat);
+let pazarMesai = pazarNet * pazar;
+
+// CUMARTESİ
+let cumartesiNet = cumartesiSaat - mola(cumartesiSaat);
+let cumartesiMesai = 0;
+
+if(cumartesiNet > 3.5){
+cumartesiMesai = (cumartesiNet - 3.5) * cumartesi;
+}
+
+let toplam = haftaIciMesai + pazarMesai + cumartesiMesai;
+
+let saatlik = maas / 225;
+
+let ucret = toplam * saatlik * 1.5;
+
+let toplamKazanc = maas + ucret;
+
+document.getElementById("sonuc").innerHTML = `
+<div class="result-item"><span>🔥 Hafta İçi Mesai</span><span>${haftaIciMesai.toFixed(2)}</span></div>
+<div class="result-item"><span>☀️ Pazar Mesai</span><span>${pazarMesai.toFixed(2)}</span></div>
+<div class="result-item"><span>🏢 Cumartesi Mesai</span><span>${cumartesiMesai.toFixed(2)}</span></div>
+<div class="result-item"><span>📊 Toplam Mesai</span><span>${toplam.toFixed(2)}</span></div>
+<div class="result-item"><span>💰 Mesai Ücreti</span><span>${ucret.toFixed(2)} ₺</span></div>
+
+<div class="result-item">
+<span>💎 Maaş + Mesai Toplam Kazanç</span>
+<span>${toplamKazanc.toFixed(2)} ₺</span>
+</div>
+`;
+}
+</script>
 
 <script>
 function hesapla(){
