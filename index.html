@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Fazla mesai hesaplama | Maaş hesaplama - Mesai hesaplama - Yakıt hesaplama</title>
+<title>fazla mesai hesaplama | aylık maaş hesaplama, yakıt,BMI,kg hesaplama</title>
 
-<meta name="description" content="Fazla mesai, kıdem, yakıt ve hesaplama araçları">
+<meta name="description" content="Fazla mesai, maaş, yakıt, BMI ve hesaplama araçları">
 <meta name="robots" content="index, follow">
 
 <style>
@@ -16,7 +16,7 @@ body{
     background:#f3f4f6;
 }
 
-/* 🔵 ÜST ALAN (GÜNCELLENDİ) */
+/* 🔵 HEADER */
 .mavi-alan{
     background: linear-gradient(135deg, #0d6efd, #0a58ca);
     color:white;
@@ -47,7 +47,7 @@ body{
     background:#e9f2ff;
 }
 
-/* 📦 ANA KISIM */
+/* 📦 CARD */
 .container{
     max-width:900px;
     margin:auto;
@@ -66,7 +66,6 @@ input{
     width:100%;
     padding:10px;
     margin:10px 0;
-    box-sizing:border-box;
 }
 
 button{
@@ -89,51 +88,27 @@ button:hover{
     border-radius:6px;
 }
 
-/* 📄 SEO ALANI */
-.seo-card {
-    max-width: 800px;
-    margin: 20px auto;
-    padding: 20px;
-    background: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-}
-
-.seo-card h1 {
-    font-size: 24px;
-    margin-bottom: 10px;
-}
-
-.seo-card h2 {
-    font-size: 18px;
-    margin-top: 15px;
-}
-
-.seo-card p {
-    line-height: 1.6;
-    font-size: 14px;
-    color: #333;
-}
-
-.seo-card ul {
-    padding-left: 20px;
-}
-
-.seo-card li {
-    margin-bottom: 5px;
+/* SEO */
+.seo-card{
+    max-width:800px;
+    margin:20px auto;
+    padding:20px;
+    background:white;
+    border-radius:12px;
+    box-shadow:0 4px 12px rgba(0,0,0,0.1);
 }
 </style>
 </head>
 
 <body>
 
-<!-- 🔵 ÜST ALAN -->
+<!-- 🔵 HEADER -->
 <header class="mavi-alan">
     <div class="header-icerik">
         <h1>Hesaplama Merkezi Aktif</h1>
-        <p>Fazla mesai • Maaş • Yakıt • BMI hesaplama araçları</p>
+        <p>Fazla mesai • Maaş • Yakıt • BMI hesaplama</p>
 
-        <a href="#maas" class="maas-btn">
+        <a href="aylik.html" class="maas-btn">
             Aylık Maaş Hesapla
         </a>
     </div>
@@ -142,14 +117,13 @@ button:hover{
 <div class="container">
 
 <!-- FAZLA MESAİ -->
-<div class="card" id="maas">
+<div class="card">
 <h2>Fazla Mesai Hesaplama</h2>
 
 <input id="maas" type="number" placeholder="Aylık maaş">
 <input id="mesaiSaat" type="number" placeholder="Mesai saat">
 
 <button onclick="hesaplaMesai()">Hesapla</button>
-
 <div class="result" id="mesaiSonuc"></div>
 </div>
 
@@ -161,7 +135,6 @@ button:hover{
 <input id="km" type="number" placeholder="Gidilen km">
 
 <button onclick="hesaplaYakit()">Hesapla</button>
-
 <div class="result" id="yakitSonuc"></div>
 </div>
 
@@ -173,134 +146,128 @@ button:hover{
 <input id="yil" type="number" placeholder="Çalışma yılı">
 
 <button onclick="hesaplaKidem()">Hesapla</button>
-
 <div class="result" id="kidemSonuc"></div>
 </div>
 
 <!-- BMI -->
 <div class="card">
-<h2>Boy - Kilo Endeksi</h2>
+<h2>BMI Hesaplama</h2>
 
 <input id="boy" type="number" placeholder="Boy (cm)">
 <input id="kilo" type="number" placeholder="Kilo (kg)">
 
 <button onclick="hesaplaBMI()">Hesapla</button>
-
 <div class="result" id="bmiSonuc"></div>
 </div>
 
 <!-- KG -->
 <div class="card">
-<h2>Kg Fiyat Hesaplama</h2>
+<h2>Kg Hesaplama</h2>
 
 <input id="kg" type="number" placeholder="Kg">
 <input id="fiyat" type="number" placeholder="Kg fiyat">
 
 <button onclick="hesaplaKg()">Hesapla</button>
-
 <div class="result" id="kgSonuc"></div>
 </div>
 
 </div>
 
-<!-- JS -->
 <script>
 
-// FAZLA MESAİ
+/* 🔥 FAZLA MESAİ (DÜZELTİLDİ) */
 function hesaplaMesai(){
-let maas=document.getElementById("maas").value;
-let saat=document.getElementById("mesaiSaat").value;
+let maas = Number(document.getElementById("maas").value);
+let saat = Number(document.getElementById("mesaiSaat").value);
 
-let gunluk=maas/30;
-let saatlik=gunluk/7.5;
-let toplam=saatlik*1.5*saat;
-
-document.getElementById("mesaiSonuc").innerHTML=
-"Günlük: "+gunluk.toFixed(2)+" TL<br>"+
-"Saatlik: "+saatlik.toFixed(2)+" TL<br>"+
-"Mesai: "+toplam.toFixed(2)+" TL";
+if(!maas || !saat){
+document.getElementById("mesaiSonuc").innerHTML = "Lütfen tüm alanları doldur!";
+return;
 }
 
-// YAKIT
+let gunluk = maas / 30;
+let saatlik = gunluk / 7.5;
+let toplam = saatlik * 1.5 * saat;
+
+document.getElementById("mesaiSonuc").innerHTML =
+"Günlük: " + gunluk.toFixed(2) + " TL<br>" +
+"Saatlik: " + saatlik.toFixed(2) + " TL<br>" +
+"Mesai: " + toplam.toFixed(2) + " TL";
+}
+
+/* YAKIT */
 function hesaplaYakit(){
-let tl=document.getElementById("yakitTL").value;
-let km=document.getElementById("km").value;
+let tl = Number(document.getElementById("yakitTL").value);
+let km = Number(document.getElementById("km").value);
 
-let sonuc=tl/km;
-
-document.getElementById("yakitSonuc").innerHTML=
-"KM başına: "+sonuc.toFixed(2)+" TL";
+if(!tl || !km){
+document.getElementById("yakitSonuc").innerHTML = "Lütfen tüm alanları doldur!";
+return;
 }
 
-// KIDEM
+let sonuc = tl / km;
+
+document.getElementById("yakitSonuc").innerHTML =
+"KM başına: " + sonuc.toFixed(2) + " TL";
+}
+
+/* KIDEM */
 function hesaplaKidem(){
-let maas=document.getElementById("kidemMaas").value;
-let yil=document.getElementById("yil").value;
+let maas = Number(document.getElementById("kidemMaas").value);
+let yil = Number(document.getElementById("yil").value);
 
-let sonuc=(maas/30)*30*yil;
-
-document.getElementById("kidemSonuc").innerHTML=
-"Tahmini Kıdem: "+sonuc.toFixed(2)+" TL";
+if(!maas || !yil){
+document.getElementById("kidemSonuc").innerHTML = "Lütfen tüm alanları doldur!";
+return;
 }
 
-// BMI
+let sonuc = (maas / 30) * 30 * yil;
+
+document.getElementById("kidemSonuc").innerHTML =
+"Tahmini Kıdem: " + sonuc.toFixed(2) + " TL";
+}
+
+/* BMI */
 function hesaplaBMI(){
-let boy=document.getElementById("boy").value;
-let kilo=document.getElementById("kilo").value;
+let boy = Number(document.getElementById("boy").value);
+let kilo = Number(document.getElementById("kilo").value);
 
-let m=boy/100;
-let bmi=kilo/(m*m);
-
-let durum="";
-
-if(bmi<18.5) durum="Zayıf";
-else if(bmi<25) durum="Normal";
-else if(bmi<30) durum="Fazla kilolu";
-else durum="Obez";
-
-document.getElementById("bmiSonuc").innerHTML=
-"BMI: "+bmi.toFixed(2)+" - "+durum;
+if(!boy || !kilo){
+document.getElementById("bmiSonuc").innerHTML = "Lütfen tüm alanları doldur!";
+return;
 }
 
-// KG
+let m = boy / 100;
+let bmi = kilo / (m * m);
+
+let durum = "";
+
+if(bmi < 18.5) durum = "Zayıf";
+else if(bmi < 25) durum = "Normal";
+else if(bmi < 30) durum = "Fazla kilolu";
+else durum = "Obez";
+
+document.getElementById("bmiSonuc").innerHTML =
+"BMI: " + bmi.toFixed(2) + " - " + durum;
+}
+
+/* KG */
 function hesaplaKg(){
-let kg=document.getElementById("kg").value;
-let fiyat=document.getElementById("fiyat").value;
+let kg = Number(document.getElementById("kg").value);
+let fiyat = Number(document.getElementById("fiyat").value);
 
-let toplam=kg*fiyat;
+if(!kg || !fiyat){
+document.getElementById("kgSonuc").innerHTML = "Lütfen tüm alanları doldur!";
+return;
+}
 
-document.getElementById("kgSonuc").innerHTML=
-"Toplam: "+toplam.toLocaleString()+" TL";
+let toplam = kg * fiyat;
+
+document.getElementById("kgSonuc").innerHTML =
+"Toplam: " + toplam.toLocaleString() + " TL";
 }
 
 </script>
-
-<!-- SEO ALANI -->
-<div class="seo-card">
-
-  <h1>Hesaplama Merkezi</h1>
-
-  <p>
-    Hesaplama Merkezi, günlük hayatınızda ihtiyaç duyabileceğiniz tüm hesaplama işlemlerini hızlı ve kolay şekilde yapmanızı sağlar.
-    Maaş hesaplama, fazla mesai hesaplama, yüzde hesaplama ve KDV hesaplama gibi araçlar tek bir yerde toplanmıştır.
-  </p>
-
-  <p>
-    Bu platform, kullanıcıların zaman kaybetmeden doğru sonuçlara ulaşmasını hedefler.
-    Mobil uyumludur ve tüm cihazlarda hızlı çalışır.
-  </p>
-
-  <h2>Hesaplama Araçları</h2>
-
-  <ul>
-    <li>Maaş ve fazla mesai hesaplama</li>
-    <li>KDV hesaplama</li>
-    <li>Yüzde hesaplama</li>
-    <li>Gün ve tarih hesaplama</li>
-    <li>Yakıt maliyeti hesaplama</li>
-  </ul>
-
-</div>
 
 </body>
 </html>
